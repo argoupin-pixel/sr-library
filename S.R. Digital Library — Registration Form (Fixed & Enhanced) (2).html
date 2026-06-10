@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S.R. Digital Library — Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#f0f0f8;font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+
+/* HEADER */
+.header{width:100%;background:linear-gradient(135deg,#4f46e5,#7c3aed,#a78bfa);padding:32px 20px 28px;text-align:center;position:relative;overflow:hidden}
+.header::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.header-ico{font-size:3rem;position:relative;z-index:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.3))}
+.header h1{font-size:1.4rem;font-weight:900;letter-spacing:-0.5px;position:relative;z-index:1;margin-top:8px;text-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.header p{font-size:0.75rem;opacity:0.85;margin-top:4px;position:relative;z-index:1}
+.header-badge{display:inline-block;background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:4px 14px;font-size:0.6rem;font-weight:700;letter-spacing:1.2px;margin-top:10px;text-transform:uppercase;position:relative;z-index:1}
+
+/* STEP BAR */
+.form-wrap{width:100%;max-width:440px;padding:22px 16px 40px}
+.step-bar{display:flex;align-items:center;justify-content:center;margin-bottom:26px;gap:0}
+.step-item{display:flex;align-items:center}
+.step-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:800;border:2px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);background:#16161f;transition:all 0.35s;position:relative}
+.step-circle.done{background:#10b981;border-color:#10b981;color:#fff;box-shadow:0 0 0 4px rgba(16,185,129,0.15)}
+.step-circle.done::after{content:'✓';position:absolute}
+.step-circle.done span{display:none}
+.step-circle.active{background:linear-gradient(135deg,#4f46e5,#a78bfa);border-color:#a78bfa;color:#fff;box-shadow:0 0 0 4px rgba(108,99,255,0.2)}
+.step-label{font-size:0.6rem;text-align:center;margin-top:4px;color:rgba(255,255,255,0.35);font-weight:600;letter-spacing:0.4px}
+.step-label.active{color:#a78bfa}
+.step-label.done{color:#10b981}
+.step-wrapper{display:flex;flex-direction:column;align-items:center}
+.step-line{width:52px;height:2px;background:rgba(255,255,255,0.08);transition:background 0.35s;margin-bottom:20px;flex-shrink:0}
+.step-line.done{background:linear-gradient(90deg,#10b981,#10b981)}
+
+/* CARDS / SECTIONS */
+.section{background:#13131c;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:20px 18px;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.3)}
+.section-t{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:#a78bfa;margin-bottom:16px;display:flex;align-items:center;gap:7px}
+.section-t span{background:rgba(167,139,250,0.12);border-radius:8px;padding:5px 8px;font-size:0.85rem}
+
+/* FORM FIELDS */
+.fg{margin-bottom:16px}
+.fg:last-child{margin-bottom:0}
+.fg label{display:block;font-size:0.62rem;color:#7878a0;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.7px;font-weight:700}
+.fg input,.fg select,.fg textarea{width:100%;padding:13px 15px;background:#1a1a27;border:1.5px solid rgba(255,255,255,0.07);border-radius:12px;color:#f0f0f8;font-family:'Inter',sans-serif;font-size:0.9rem;outline:none;transition:all 0.2s;-webkit-appearance:none;appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#6c63ff;background:#1e1e2e;box-shadow:0 0 0 3px rgba(108,99,255,0.12)}
+.fg input::placeholder{color:#3a3a58}
+.info-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:8px;padding:6px 11px;font-size:0.68rem;color:#10b981;font-weight:600;margin-top:8px}
+
+/* ROOM CARDS */
+.room-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
+.room-card{border:2px solid rgba(255,255,255,0.07);border-radius:14px;padding:18px 14px;cursor:pointer;transition:all 0.22s;text-align:center;background:#1a1a27;position:relative;overflow:hidden}
+.room-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.22s}
+.room-card:active{transform:scale(0.97)}
+.room-card.sel-ac{border-color:#14b8a6;background:rgba(20,184,166,0.07)}
+.room-card.sel-ac::before{background:radial-gradient(circle at 50% 0%,rgba(20,184,166,0.15),transparent 70%);opacity:1}
+.room-card.sel-nac{border-color:#f59e0b;background:rgba(245,158,11,0.07)}
+.room-card.sel-nac::before{background:radial-gradient(circle at 50% 0%,rgba(245,158,11,0.15),transparent 70%);opacity:1}
+.room-ico{font-size:2rem;margin-bottom:8px;display:block}
+.room-name{font-size:0.85rem;font-weight:800;margin-bottom:4px}
+.room-price{font-size:1rem;font-weight:900;margin-bottom:4px}
+.room-card.sel-ac .room-price{color:#14b8a6}
+.room-card.sel-nac .room-price{color:#f59e0b}
+.room-price span{font-size:0.6rem;font-weight:500;color:#5a5a7a;display:block;margin-top:1px}
+.room-tag{font-size:0.58rem;background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 7px;color:#6b6b8a;margin-top:2px;display:inline-block}
+.sel-badge{display:none;position:absolute;top:8px;right:8px;background:#10b981;border-radius:50%;width:18px;height:18px;align-items:center;justify-content:center;font-size:0.6rem}
+.room-card.sel-ac .sel-badge,.room-card.sel-nac .sel-badge{display:flex}
+
+/* SHIFT CARDS */
+.shift-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.shift-card{border:2px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px 8px;cursor:pointer;transition:all 0.22s;text-align:center;background:#1a1a27}
+.shift-card.sel{border-color:#6c63ff;background:rgba(108,99,255,0.1);box-shadow:0 0 0 3px rgba(108,99,255,0.1)}
+.shift-card:active{transform:scale(0.96)}
+.shift-ico{font-size:1.4rem;margin-bottom:6px;display:block}
+.shift-name{font-size:0.72rem;font-weight:800;margin-bottom:2px}
+.shift-time{font-size:0.58rem;color:#5a5a7a;line-height:1.4}
+.shift-card.sel .shift-time{color:#9898c8}
+
+/* FEE DISPLAY */
+.fee-strip{background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(245,158,11,0.05));border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:13px 16px;display:none;margin-top:14px;align-items:center;justify-content:space-between}
+.fee-strip.show{display:flex}
+.fee-label{font-size:0.7rem;color:#9898b8;font-weight:600}
+.fee-amt{font-size:1.15rem;font-weight:900;color:#f59e0b}
+.fee-sub{font-size:0.58rem;color:#7878a0;margin-top:1px}
+
+/* REVIEW PAGE */
+.review-card{background:#13131c;border:1px solid rgba(255,255,255,0.07);border-radius:18px;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 24px rgba(0,0,0,0.3)}
+.review-header{background:linear-gradient(135deg,rgba(108,99,255,0.15),rgba(167,139,250,0.08));padding:16px 18px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:10px}
+.review-header-ico{font-size:1.5rem}
+.review-header-text{font-size:0.85rem;font-weight:800}
+.review-header-sub{font-size:0.65rem;color:#7878a0;margin-top:2px}
+.review-row{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.review-row:last-child{border:none}
+.review-lbl{font-size:0.62rem;color:#5a5a7a;text-transform:uppercase;letter-spacing:0.6px;font-weight:700}
+.review-val{font-weight:700;font-size:0.88rem;text-align:right}
+.fee-highlight{color:#f59e0b;font-size:1rem!important;font-weight:900!important}
+
+/* BUTTONS */
+.btn-next{width:100%;padding:15px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;border-radius:13px;font-family:'Inter',sans-serif;font-size:0.92rem;font-weight:800;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 20px rgba(79,70,229,0.4);letter-spacing:0.2px;margin-top:4px}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(79,70,229,0.5)}
+.btn-next:active{transform:scale(0.98)}
+.btn-back{width:100%;padding:12px;background:transparent;color:#7878a0;border:1.5px solid rgba(255,255,255,0.07);border-radius:13px;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;margin-top:9px;transition:all 0.2s}
+.btn-back:hover{border-color:rgba(255,255,255,0.15);color:#a0a0c0}
+
+/* ERRORS */
+.err{font-size:0.63rem;color:#f87171;margin-top:5px;display:none;align-items:center;gap:4px;font-weight:600}
+.err.show{display:flex}
+
+/* SUCCESS PAGE */
+.success-wrap{display:none;padding:10px 0 20px;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes popIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+.confetti-row{font-size:1.8rem;letter-spacing:4px;margin-bottom:16px;text-align:center}
+.success-title{text-align:center;font-size:1.4rem;font-weight:900;margin-bottom:6px;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.success-sub{text-align:center;font-size:0.8rem;color:#6b6b8a;line-height:1.8;margin-bottom:22px}
+.success-sub strong{color:#a0a0c8}
+
+.success-card{background:#13131c;border:1px solid rgba(255,255,255,0.07);border-radius:18px;overflow:hidden;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.sc-header{background:linear-gradient(135deg,#4f46e5,#7c3aed);padding:16px 18px;display:flex;align-items:center;gap:10px}
+.sc-header-ico{font-size:1.4rem}
+.sc-header-text{font-size:0.85rem;font-weight:800}
+.sc-header-id{font-size:0.6rem;opacity:0.7;margin-top:2px;font-family:monospace}
+.sc-row{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.sc-row:last-child{border:none}
+.sc-lbl{font-size:0.62rem;color:#5a5a7a;text-transform:uppercase;letter-spacing:0.5px;font-weight:700}
+.sc-val{font-weight:700;font-size:0.85rem}
+
+.steps-box{background:#13131c;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:20px 18px;margin-bottom:16px}
+.steps-box-title{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#a78bfa;margin-bottom:14px}
+.next-step{display:flex;align-items:flex-start;gap:12px;margin-bottom:13px}
+.next-step:last-child{margin-bottom:0}
+.ns-num{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:800;flex-shrink:0;margin-top:1px}
+.ns-text{font-size:0.8rem;font-weight:700;line-height:1.5}
+.ns-sub{font-size:0.68rem;color:#6b6b8a;margin-top:1px;line-height:1.5}
+
+.payment-box{background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(245,158,11,0.04));border:1px solid rgba(245,158,11,0.25);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+.pay-title{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#f59e0b;margin-bottom:10px}
+.pay-methods{display:flex;gap:8px;flex-wrap:wrap}
+.pay-chip{background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:5px 11px;font-size:0.68rem;font-weight:700;color:#f59e0b}
+
+.thank-box{text-align:center;padding:20px;background:#13131c;border:1px solid rgba(255,255,255,0.07);border-radius:18px;margin-bottom:16px}
+.thank-ico{font-size:2.5rem;margin-bottom:10px}
+.thank-title{font-size:1rem;font-weight:900;margin-bottom:8px}
+.thank-text{font-size:0.78rem;color:#6b6b8a;line-height:1.8}
+.thank-text strong{color:#a78bfa}
+
+.poweredby{text-align:center;font-size:0.58rem;color:#2a2a42;letter-spacing:0.5px;padding:16px 0 8px}
+
+/* STEPS */
+.form-step{display:none}
+.form-step.active{display:block;animation:slideIn 0.25s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-ico">📚</div>
+  <h1>S.R. Digital Library</h1>
+  <p>Reserve your seat — quick & easy</p>
+  <div class="header-badge">✦ Powered by Argoup · Made by Piyush</div>
+</div>
+
+<div class="form-wrap">
+
+  <!-- Step Bar -->
+  <div class="step-bar" id="stepbar">
+    <div class="step-item">
+      <div class="step-wrapper">
+        <div class="step-circle active" id="sc1"><span>1</span></div>
+        <div class="step-label active" id="sl1">Details</div>
+      </div>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step-item">
+      <div class="step-wrapper">
+        <div class="step-circle" id="sc2"><span>2</span></div>
+        <div class="step-label" id="sl2">Seat</div>
+      </div>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step-item">
+      <div class="step-wrapper">
+        <div class="step-circle" id="sc3"><span>3</span></div>
+        <div class="step-label" id="sl3">Confirm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 1 ── -->
+  <div class="form-step active" id="step-1">
+    <div class="section">
+      <div class="section-t"><span>👤</span> Your Details</div>
+      <div class="fg">
+        <label>Full Name</label>
+        <input type="text" id="r-name" placeholder="Enter your full name" autocomplete="name">
+        <div class="err" id="e-name">⚠ Please enter your full name</div>
+      </div>
+      <div class="fg">
+        <label>WhatsApp Number</label>
+        <input type="tel" id="r-phone" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric">
+        <div class="err" id="e-phone">⚠ Please enter a valid 10-digit number</div>
+      </div>
+      <div class="info-chip" id="date-chip">📅 <span id="today-display"></span></div>
+    </div>
+    <button class="btn-next" onclick="goStep2()">Continue &rarr;</button>
+  </div>
+
+  <!-- ── STEP 2 ── -->
+  <div class="form-step" id="step-2">
+    <div class="section">
+      <div class="section-t"><span>🏠</span> Choose Your Room</div>
+      <div class="room-grid">
+        <div class="room-card" id="card-ac" onclick="selRoom('AC')">
+          <div class="sel-badge">✓</div>
+          <span class="room-ico">❄️</span>
+          <div class="room-name">AC Room</div>
+          <div class="room-price">₹350 <span>per month</span></div>
+          <span class="room-tag">Air Conditioned</span>
+        </div>
+        <div class="room-card" id="card-nac" onclick="selRoom('Non-AC')">
+          <div class="sel-badge">✓</div>
+          <span class="room-ico">🌀</span>
+          <div class="room-name">Non-AC Room</div>
+          <div class="room-price">₹300 <span>per month</span></div>
+          <span class="room-tag">Fan Cooled</span>
+        </div>
+      </div>
+      <div class="err" id="e-room">⚠ Please select a room type</div>
+    </div>
+
+    <div class="section">
+      <div class="section-t"><span>🕐</span> Choose Your Shift</div>
+      <div class="shift-grid">
+        <div class="shift-card" id="sh-morning" onclick="selShift('Morning','sh-morning')">
+          <span class="shift-ico">🌅</span>
+          <div class="shift-name">Morning</div>
+          <div class="shift-time">7:00 AM<br>to 1:00 PM</div>
+        </div>
+        <div class="shift-card" id="sh-evening" onclick="selShift('Evening','sh-evening')">
+          <span class="shift-ico">🌆</span>
+          <div class="shift-name">Evening</div>
+          <div class="shift-time">1:00 PM<br>to 7:00 PM</div>
+        </div>
+        <div class="shift-card" id="sh-fullday" onclick="selShift('Full Day','sh-fullday')">
+          <span class="shift-ico">☀️</span>
+          <div class="shift-name">Full Day</div>
+          <div class="shift-time">7:00 AM<br>to 7:00 PM</div>
+        </div>
+      </div>
+      <div class="err" id="e-shift">⚠ Please select a shift</div>
+      <div class="fee-strip" id="fee-strip">
+        <div>
+          <div class="fee-label">Monthly Fee</div>
+          <div class="fee-sub">Payable after admin approval</div>
+        </div>
+        <div class="fee-amt" id="fee-show">₹0</div>
+      </div>
+    </div>
+    <button class="btn-next" onclick="goStep3()">Review &amp; Confirm &rarr;</button>
+    <button class="btn-back" onclick="setStep(1)">← Go Back</button>
+  </div>
+
+  <!-- ── STEP 3 ── -->
+  <div class="form-step" id="step-3">
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-header-ico">📋</div>
+        <div>
+          <div class="review-header-text">Registration Summary</div>
+          <div class="review-header-sub">Please confirm your details before submitting</div>
+        </div>
+      </div>
+      <div class="review-row">
+        <div class="review-lbl">Full Name</div>
+        <div class="review-val" id="rv-name">—</div>
+      </div>
+      <div class="review-row">
+        <div class="review-lbl">WhatsApp</div>
+        <div class="review-val" id="rv-phone">—</div>
+      </div>
+      <div class="review-row">
+        <div class="review-lbl">Room Type</div>
+        <div class="review-val" id="rv-room">—</div>
+      </div>
+      <div class="review-row">
+        <div class="review-lbl">Shift</div>
+        <div class="review-val" id="rv-shift">—</div>
+      </div>
+      <div class="review-row">
+        <div class="review-lbl">Monthly Fee</div>
+        <div class="review-val fee-highlight" id="rv-fee">—</div>
+      </div>
+      <div class="review-row">
+        <div class="review-lbl">Date Applied</div>
+        <div class="review-val" id="rv-date">—</div>
+      </div>
+    </div>
+    <button class="btn-next" onclick="submitForm()" id="submit-btn">🚀 Submit Registration</button>
+    <button class="btn-back" onclick="setStep(2)">← Go Back</button>
+  </div>
+
+  <!-- ── SUCCESS ── -->
+  <div class="success-wrap" id="success-page">
+    <div class="confetti-row">🎉 🎊 ✨</div>
+    <div class="success-title">Registration Submitted!</div>
+    <p class="success-sub">Your form has been sent to the admin.<br><strong>Your seat will be confirmed once payment is received.</strong></p>
+
+    <div class="success-card" id="sc-card">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="steps-box">
+      <div class="steps-box-title">📌 What Happens Next</div>
+      <div class="next-step">
+        <div class="ns-num">1</div>
+        <div>
+          <div class="ns-text">Admin Reviews Your Form</div>
+          <div class="ns-sub">Your registration is now with the S.R. Library admin for review.</div>
+        </div>
+      </div>
+      <div class="next-step">
+        <div class="ns-num">2</div>
+        <div>
+          <div class="ns-text">Submit Your Fees (Online or Offline)</div>
+          <div class="ns-sub">Pay your monthly seat fee — online transfer or visit the library in person. Once payment is confirmed, your seat will be officially registered.</div>
+        </div>
+      </div>
+      <div class="next-step">
+        <div class="ns-num">3</div>
+        <div>
+          <div class="ns-text">Seat Confirmed!</div>
+          <div class="ns-sub">Once your payment is received, your seat will be officially confirmed. Need an invoice? Just ask — it will be sent to your registered mobile number.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment-box">
+      <div class="pay-title">💳 Payment Accepted Via</div>
+      <div class="pay-methods">
+        <span class="pay-chip">UPI</span>
+        <span class="pay-chip">PhonePe</span>
+        <span class="pay-chip">Google Pay</span>
+        <span class="pay-chip">Cash (Offline)</span>
+      </div>
+    </div>
+
+    <div class="thank-box">
+      <div class="thank-ico">🙏</div>
+      <div class="thank-title">Thank You for Choosing S.R. Digital Library!</div>
+      <p class="thank-text">
+        We are truly grateful for your trust in us.<br>
+        May this library be a place where your <strong>dreams take shape</strong>, your focus deepens, and your hard work leads to the <strong>success you deserve</strong>.<br><br>
+        Study well. Stay consistent. <strong>We believe in you.</strong> 💪✨
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<div class="poweredby">S.R. Digital Library &nbsp;·&nbsp; Powered by Argoup &nbsp;·&nbsp; Made by Piyush</div>
+
+<script>
+// ── State ─────────────────────────────────────────────────────────────────
+const S={name:'',phone:'',room:'',shift:'',date:''};
+
+// ── Set today's date ──────────────────────────────────────────────────────
+const today=new Date();
+S.date=today.toISOString().split('T')[0];
+const opts={weekday:'long',year:'numeric',month:'long',day:'numeric'};
+document.getElementById('today-display').textContent='Registration Date: '+today.toLocaleDateString('en-IN',opts);
+
+// ── Step Management ───────────────────────────────────────────────────────
+function setStep(n){
+  document.querySelectorAll('.form-step').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('step-'+n);
+  if(el) el.classList.add('active');
+  // update circles
+  for(let i=1;i<=3;i++){
+    const c=document.getElementById('sc'+i),l=document.getElementById('sl'+i);
+    c.classList.remove('active','done');
+    l.classList.remove('active','done');
+    if(i<n){c.classList.add('done');l.classList.add('done');}
+    else if(i===n){c.classList.add('active');l.classList.add('active');}
+    if(i<3) document.getElementById('line'+i).classList.toggle('done',i<n);
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── Step 1 → 2 ────────────────────────────────────────────────────────────
+function goStep2(){
+  const name=document.getElementById('r-name').value.trim();
+  const phone=document.getElementById('r-phone').value.trim();
+  let ok=true;
+  if(!name){show('e-name');ok=false;}else hide('e-name');
+  if(!/^[6-9]\d{9}$/.test(phone)){show('e-phone');ok=false;}else hide('e-phone');
+  if(!ok)return;
+  S.name=name;S.phone=phone;
+  setStep(2);
+}
+
+// ── Step 2 → 3 ────────────────────────────────────────────────────────────
+function goStep3(){
+  let ok=true;
+  if(!S.room){show('e-room');ok=false;}else hide('e-room');
+  if(!S.shift){show('e-shift');ok=false;}else hide('e-shift');
+  if(!ok)return;
+  // fill review
+  document.getElementById('rv-name').textContent=S.name;
+  document.getElementById('rv-phone').textContent='📱 '+S.phone;
+  document.getElementById('rv-room').textContent=S.room==='AC'?'❄️ AC Room':'🌀 Non-AC Room';
+  document.getElementById('rv-shift').textContent=shiftLabel(S.shift);
+  document.getElementById('rv-fee').textContent='₹'+(S.room==='AC'?350:300)+' / month';
+  document.getElementById('rv-date').textContent=today.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  setStep(3);
+}
+
+function shiftLabel(sh){
+  return sh==='Morning'?'🌅 Morning (7AM–1PM)':sh==='Evening'?'🌆 Evening (1PM–7PM)':'☀️ Full Day (7AM–7PM)';
+}
+
+// ── Room Selection ────────────────────────────────────────────────────────
+function selRoom(r){
+  S.room=r;
+  document.getElementById('card-ac').classList.remove('sel-ac');
+  document.getElementById('card-nac').classList.remove('sel-nac');
+  document.getElementById('card-'+(r==='AC'?'ac':'nac')).classList.add('sel-'+(r==='AC'?'ac':'nac'));
+  hide('e-room');
+  const fs=document.getElementById('fee-strip');
+  fs.classList.add('show');
+  document.getElementById('fee-show').textContent='₹'+(r==='AC'?350:300);
+}
+
+// ── Shift Selection ───────────────────────────────────────────────────────
+function selShift(name,id){
+  S.shift=name;
+  document.querySelectorAll('.shift-card').forEach(c=>c.classList.remove('sel'));
+  document.getElementById(id).classList.add('sel');
+  hide('e-shift');
+}
+
+// ── Submit ────────────────────────────────────────────────────────────────
+function submitForm(){
+  const btn=document.getElementById('submit-btn');
+  btn.textContent='⏳ Submitting...';
+  btn.disabled=true;
+
+  const entry={
+    id:'SR'+Date.now(),
+    name:S.name,phone:S.phone,
+    room:S.room,shift:S.shift,date:S.date
+  };
+  try{
+    const p=JSON.parse(localStorage.getItem('sr_reg')||'[]');
+    p.push(entry);localStorage.setItem('sr_reg',JSON.stringify(p));
+  }catch(e){}
+
+  setTimeout(()=>showSuccess(entry),900);
+}
+
+// ── Success ───────────────────────────────────────────────────────────────
+function showSuccess(e){
+  document.querySelectorAll('.form-step').forEach(s=>s.style.display='none');
+  document.getElementById('stepbar').style.display='none';
+
+  const card=document.getElementById('sc-card');
+  card.innerHTML=`
+    <div class="sc-header">
+      <div class="sc-header-ico">🎫</div>
+      <div>
+        <div class="sc-header-text">Booking Reference</div>
+        <div class="sc-header-id">ID: ${e.id}</div>
+      </div>
+    </div>
+    <div class="sc-row"><div class="sc-lbl">Name</div><div class="sc-val">${e.name}</div></div>
+    <div class="sc-row"><div class="sc-lbl">WhatsApp</div><div class="sc-val">${e.phone}</div></div>
+    <div class="sc-row"><div class="sc-lbl">Room</div><div class="sc-val">${e.room==='AC'?'❄️ AC Room':'🌀 Non-AC Room'}</div></div>
+    <div class="sc-row"><div class="sc-lbl">Shift</div><div class="sc-val">${shiftLabel(e.shift)}</div></div>
+    <div class="sc-row"><div class="sc-lbl">Monthly Fee</div><div class="sc-val" style="color:#f59e0b;font-weight:900">₹${e.room==='AC'?350:300}/month</div></div>
+    <div class="sc-row"><div class="sc-lbl">Applied On</div><div class="sc-val">${today.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</div></div>
+  `;
+  document.getElementById('success-page').style.display='block';
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function show(id){document.getElementById(id).classList.add('show')}
+function hide(id){document.getElementById(id).classList.remove('show')}
+</script>
+</body>
+</html>
